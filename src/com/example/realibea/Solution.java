@@ -6,24 +6,32 @@ public class Solution {
 
     private ArrayList<Double> fitness;
     private ArrayList<Double> normalizedFitness;
-    private Double indicatorValue;
+    private ArrayList<Double> indicatorValues;
+    private Double indicatorFitness;
     private ArrayList<Double> genotype;
+    private Double c;
 
-    public Solution(ArrayList<Double> genotype)
+    public Solution(ArrayList<Double> genotype_)
     {
-        this.genotype = genotype;
+        this.genotype = genotype_;
 
     }
 
-    public ArrayList<Double> getGenotype(){return this.fitness;}
+    public ArrayList<Double> getGenotype(){return this.genotype;}
     public void setFitness(ArrayList<Double> fitness_){this.fitness=fitness_;}
-    public void setNormalizedFitness(ArrayList<Double> fitness_){this.normalizedFitness=fitness_;}
     public void setNormalizedFitness(int i, Double f){this.normalizedFitness.set(i,f);}
+    public void setIndicatorValues(ArrayList<Double> iv){this.indicatorValues = iv;}
+    public void setIndicatorFitness(Double iF){this.indicatorFitness = iF;}
 
+    public ArrayList<Double> getIndicatorValues(){return this.indicatorValues;}
     public Double getFitness(int i){return this.fitness.get(i);}
-    public void initializeNormalizedFitness(int objectiveNume)
+    public Double getIndicatorFitness(){return  this.indicatorFitness;}
+    public ArrayList<Double> getFitness(){return this.fitness;}
+    public ArrayList<Double> getNormalizedFitness(){return this.normalizedFitness;}
+    public void initializeNormalizedFitness(int objectiveNum)
     {
-        for (int i=0;i<objectiveNume;i++)
+        this.normalizedFitness = new ArrayList<>();
+        for (int i=0;i<objectiveNum;i++)
         {
             this.normalizedFitness.add(0.0);
         }

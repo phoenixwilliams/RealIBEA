@@ -15,6 +15,7 @@ public final class PopulationUtils {
         {
             genotype.add(random.nextDouble());
         }
+
         return new Solution(genotype);
     }
 
@@ -64,4 +65,24 @@ public final class PopulationUtils {
         }
 
     }
+
+    public static void SetIndicatorFitness(ArrayList<Solution> population, Double c, Double k)
+    {
+        Double indicatorFitness;
+        ArrayList<Double> indicators;
+
+        for (Solution sol: population)
+        {
+            indicatorFitness = 0.0;
+            indicators = sol.getIndicatorValues();
+
+            for (Double i:indicators)
+            {
+                indicatorFitness += -1.0*Math.exp(-1.0*(i/(c*k)));
+            }
+            sol.setIndicatorFitness(indicatorFitness);
+        }
+    }
+
+
 }

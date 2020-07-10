@@ -5,7 +5,7 @@ import java.util.Arrays;
 
 public class ZDTProblem {
 
-    public int objectiveNum(){return 2;}
+    public static int objectiveNum(){return 2;}
 
     public static ArrayList<Double> ZDT1(ArrayList<Double> decisionVariables)
     {
