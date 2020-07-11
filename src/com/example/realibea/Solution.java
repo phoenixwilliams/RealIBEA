@@ -23,6 +23,8 @@ public class Solution {
     public void setIndicatorValues(ArrayList<Double> iv){this.indicatorValues = iv;}
     public void setIndicatorFitness(Double iF){this.indicatorFitness = iF;}
 
+    public void appendIndicatorFitness(Double iF) { this.indicatorFitness += iF; }
+
     public ArrayList<Double> getIndicatorValues(){return this.indicatorValues;}
     public Double getFitness(int i){return this.fitness.get(i);}
     public Double getIndicatorFitness(){return  this.indicatorFitness;}

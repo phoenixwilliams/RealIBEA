@@ -37,6 +37,37 @@ public final class PopulationUtils {
         }
     }
 
+    public static void EvaluatePopulationZDT2(ArrayList<Solution> population)
+    {
+        for (Solution sol:population)
+        {
+            sol.setFitness(ZDTProblem.ZDT2(sol.getGenotype()));
+        }
+    }
+
+    public static void EvaluatePopulationZDT3(ArrayList<Solution> population)
+    {
+        for (Solution sol:population)
+        {
+            sol.setFitness(ZDTProblem.ZDT3(sol.getGenotype()));
+        }
+    }
+
+    public static void EvaluatePopulationZDT4(ArrayList<Solution> population)
+    {
+        for (Solution sol:population)
+        {
+            sol.setFitness(ZDTProblem.ZDT4(sol.getGenotype()));
+        }
+    }
+    public static void EvaluatePopulationZDT6(ArrayList<Solution> population)
+    {
+        for (Solution sol:population)
+        {
+            sol.setFitness(ZDTProblem.ZDT6(sol.getGenotype()));
+        }
+    }
+
     public static void NormalizePopulationFitness(ArrayList<Solution> population, int objectiveNum)
     {
         Double bmin,bmax, fitnessNorm;
@@ -82,6 +113,19 @@ public final class PopulationUtils {
             }
             sol.setIndicatorFitness(indicatorFitness);
         }
+    }
+
+    public static void EnvironmentalFitnessUpdate(ArrayList<Solution> population, Solution x, double c, double k)
+    {
+        double fitness, indicator;
+        for (Solution sol:population)
+        {
+            indicator = IndicatorUtils.BinaryIndicator(x.getNormalizedFitness(), sol.getNormalizedFitness());
+            fitness  = sol.getIndicatorFitness() + Math.exp(-1.0*(indicator/(c*k)));
+            sol.setIndicatorFitness(fitness);
+
+        }
+
     }
 
 
