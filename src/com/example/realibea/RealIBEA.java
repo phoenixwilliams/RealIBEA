@@ -54,6 +54,22 @@ public class RealIBEA {
         ArrayList<Solution> offsprings;
         Random random = new Random();
 
+        /**
+        while(childPopulation.size()<parentPopulation.size())
+        {
+            p1 = random.nextInt(parentPopulation.size());
+            p2 = random.nextInt(parentPopulation.size());
+            parent1 = SelectionUtils.MinCrowdedBinaryTournament(parentPopulation.get(p1), parentPopulation.get(p2));
+            p1 = random.nextInt(parentPopulation.size());
+            p2 = random.nextInt(parentPopulation.size());
+            parent2 = SelectionUtils.MinCrowdedBinaryTournament(parentPopulation.get(p1), parentPopulation.get(p2));
+
+
+        }
+         */
+
+
+
         ArrayList<Integer> a1 = new ArrayList<>();
         ArrayList<Integer> a2 = new ArrayList<>();
 
@@ -80,19 +96,22 @@ public class RealIBEA {
             //System.out.println(parent1.getGenotype()+":"+parent2.getGenotype());
 
             offsprings = OperatorUtils.BoundedSBXCrossover(parent1, parent2, nc, upperBound, lowerBound, reproductionProb);
-            childPopulation.add(offsprings.get(0));
-            childPopulation.add(offsprings.get(0));
+            offspring1 = OperatorUtils.BoundedPolynomialMutation(offsprings.get(0), nm, lowerBound, upperBound,mutProb);
+            offspring2 = OperatorUtils.BoundedPolynomialMutation(offsprings.get(1), nm, lowerBound, upperBound,mutProb);
 
-            //System.out.println(offsprings.get(0).getGenotype()+":"+offsprings.get(1).getGenotype());
+
+            childPopulation.add(offspring1);
+            childPopulation.add(offspring2);
+
             parent1 = SelectionUtils.MinCrowdedBinaryTournament(parentPopulation.get(a2.get(i)), parentPopulation.get(a2.get(i + 1)));
             parent2 = SelectionUtils.MinCrowdedBinaryTournament(parentPopulation.get(a2.get(i + 2)), parentPopulation.get(a2.get(i + 3)));
             offsprings = OperatorUtils.BoundedSBXCrossover(parent1, parent2, nc, upperBound, lowerBound, reproductionProb);
-            childPopulation.add(offsprings.get(0));
-            childPopulation.add(offsprings.get(0));
-            //System.out.println(offsprings.get(0).getGenotype()+":"+offsprings.get(1).getGenotype());
-            //System.out.println();
-
+            offspring1 = OperatorUtils.BoundedPolynomialMutation(offsprings.get(0), nm, lowerBound, upperBound,mutProb);
+            offspring2 = OperatorUtils.BoundedPolynomialMutation(offsprings.get(1), nm, lowerBound, upperBound,mutProb);
+            childPopulation.add(offspring1);
+            childPopulation.add(offspring2);
         }
+
 
 
 
@@ -105,7 +124,7 @@ public class RealIBEA {
     public static void IBEA(String problem)
     {
         int variableNum = 30;
-        int populationSize = 100;
+        int populationSize = 140;
         int iterations = 250;
         ArrayList<Solution> population = PopulationUtils.InitialPopulation(variableNum, populationSize);
         ArrayList<Solution> childPopulation;
@@ -120,6 +139,13 @@ public class RealIBEA {
         double lowerBound = 0.0;
 
         for (int i=0; i<iterations;i++) {
+
+            if(i>iterations*0.8)
+            {
+                nc = 10;
+                nm = 10;
+            }
+
             switch (problem){
                 case "ZDT1":
                     PopulationUtils.EvaluatePopulationZDT1(population);
@@ -138,16 +164,6 @@ public class RealIBEA {
             c = IndicatorUtils.SetPopulationBinaryIndicator(population);
             PopulationUtils.SetIndicatorFitness(population, c, k);
 
-            /**
-             System.out.println(c);
-             for (Solution sol:population)
-             {
-             System.out.println(sol.getNormalizedFitness());
-             System.out.println(sol.getIndicatorValues());
-             System.out.println(sol.getIndicatorFitness());
-             System.out.println();
-             }
-             */
 
             //Environmental Selection
             childPopulation = generateOffspringPopulation(population, mutationProbability, nc, nm, lowerBound,
@@ -159,19 +175,22 @@ public class RealIBEA {
                 case "ZDT1":
                     PopulationUtils.EvaluatePopulationZDT1(population);
                     break;
-
-                default:
-                    System.out.println("PROBLEM NOT RECOGNISED");
-                    return;
             }
             population = IBEASelection(population, k);
             //System.out.println(population.size());
         }
+        switch (problem){
+            case "ZDT1":
+                PopulationUtils.EvaluatePopulationZDT1(population);
+                break;
+        }
+
 
 
         for (Solution sol:population)
         {
-            System.out.println(sol.getFitness());
+            //System.out.println(sol.getFitness());
+            System.out.println(sol.getIndicatorFitness());
         }
 
         AnalysisUtils.generateDatFile(population, "solutions", ZDTProblem.objectiveNum());

@@ -99,8 +99,8 @@ public final class OperatorUtils {
     }
 
 
-    public static Solution BoundedPolynomialMutation(Solution individual, double nm, ArrayList<Double> lowerBounds,
-                                                     ArrayList<Double> upperBounds, double mutProb)
+    public static Solution BoundedPolynomialMutation(Solution individual, double nm, double lowerBound,
+                                                     double upperBound, double mutProb)
     {
         ArrayList<Double> individualGenotype = individual.getGenotype();
         ArrayList<Double> mutatedIndvGenotype = new ArrayList<>();
@@ -111,7 +111,8 @@ public final class OperatorUtils {
 
 
         //System.out.println(individualGenotype.size()+":"+lowerBounds.size());
-
+        yl = lowerBound;
+        yu = upperBound;
 
         for (int i=0;i<individualGenotype.size();i++)
         {
@@ -120,8 +121,7 @@ public final class OperatorUtils {
             if (mut < mutProb)
             {
                 y = individualGenotype.get(i);
-                yl = lowerBounds.get(i);
-                yu = upperBounds.get(i);
+
 
                 delta1  = (y - yl) / (yu - yl);
                 delta2  = (yu - y) / (yu - yl);
